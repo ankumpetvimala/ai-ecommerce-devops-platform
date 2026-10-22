@@ -14,7 +14,6 @@ pipeline {
             steps {
                 echo 'Build stage started'
                 sh 'git --version'
-                sh 'docker --version'
             }
         }
 
@@ -22,13 +21,15 @@ pipeline {
             steps {
                 echo 'Test stage started'
                 sh 'git status'
+                sh 'test -f README.md'
             }
         }
 
         stage('Validation') {
             steps {
                 echo 'Validation stage started'
-                sh 'if exist Jenkinsfile (echo Jenkinsfile found) else (exit /b 1)'
+                sh 'test -f Jenkinsfile'
+                sh 'echo "README.md and Jenkinsfile validation passed"'
             }
         }
     }
