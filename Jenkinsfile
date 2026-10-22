@@ -13,22 +13,22 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Build stage started'
-                bat 'git --version'
-                bat 'docker --version'
+                sh 'git --version'
+                sh 'docker --version'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Test stage started'
-                bat 'git status'
+                sh 'git status'
             }
         }
 
         stage('Validation') {
             steps {
                 echo 'Validation stage started'
-                bat 'if exist Jenkinsfile (echo Jenkinsfile found) else (exit /b 1)'
+                sh 'if exist Jenkinsfile (echo Jenkinsfile found) else (exit /b 1)'
             }
         }
     }
