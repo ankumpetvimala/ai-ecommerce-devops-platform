@@ -27,7 +27,7 @@ Saleor is used as the existing e-commerce application. Its source repository is 
 
 - [x] Clone and start Saleor locally
 - [x] Verify the GraphQL API
-- [ ] Establish the DevOps project repository
+- [x] Establish the DevOps project repository
 - [ ] Implement automation and CI/CD
 - [ ] Implement infrastructure and configuration management
 - [ ] Deploy with Kubernetes and Helm
