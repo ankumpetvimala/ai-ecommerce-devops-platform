@@ -5,41 +5,59 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checkout stage started'
+                echo 'Checking out project source code'
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Build stage started'
+                echo 'Checking Git and Docker versions'
                 sh 'git --version'
+                sh 'docker --version'
             }
         }
 
         stage('Test') {
             steps {
-                echo 'Test stage started'
-                sh 'git status'
+                echo 'Running project file checks'
+                sh 'git status --short'
                 sh 'test -f README.md'
+                sh 'test -f Jenkinsfile'
+                sh 'test -f docker/Dockerfile'
+                sh 'test -f docker/validation/README.md'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building the project validation Docker image'
+                sh 'docker build -t ai-ecommerce-devops-validation:1.0 -f docker/Dockerfile docker/validation'
+            }
+        }
+
+        stage('Docker Validation') {
+            steps {
+                echo 'Running the validation image'
+                sh 'docker run --rm ai-ecommerce-devops-validation:1.0'
+                sh 'docker image inspect ai-ecommerce-devops-validation:1.0'
             }
         }
 
         stage('Validation') {
             steps {
-                echo 'Validation stage started'
-                sh 'test -f Jenkinsfile'
-                sh 'echo "README.md and Jenkinsfile validation passed"'
+                echo 'All project and Docker validation checks passed'
             }
         }
     }
 
     post {
         success {
-            echo 'CI Pipeline completed successfully'
+            echo 'CI Pipeline completed successfully: Docker image built and tested'
         }
         failure {
-            echo 'CI Pipeline failed. Check Console Output.'
+            echo 'CI Pipeline failed. Review the Console Output for details.'
         }
     }
 }
+
