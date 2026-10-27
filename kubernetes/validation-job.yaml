@@ -1,0 +1,23 @@
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ai-ecommerce-validation
+spec:
+  backoffLimit: 1
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      labels:
+        app: ai-ecommerce-validation
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: validation
+          image: ai-ecommerce-devops-validation:1.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+            - cat /app/README.md
